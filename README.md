@@ -1,0 +1,2 @@
+# VIP
+INHA VIP class 2024
