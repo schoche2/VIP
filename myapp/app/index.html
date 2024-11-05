@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enter Data</title>
+</head>
+<body>
+  <h1>Enter Data</h1>
+  <form id="dataForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <button type="submit">Submit</button>
+  </form>
+
+  <h2>Current Entries</h2>
+  <ul id="entriesList"></ul>
+
+
+
+  <script>
+    // JavaScript to handle form submission
+    document.getElementById('dataForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+
+      try {
+        const response = await fetch('/entry', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name }),
+        });
+
+        if (response.ok) {
+          alert("Entry added successfully!");
+          document.getElementById('dataForm').reset();
+        } else {
+          alert("Error adding entry.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while submitting the form.");
+      }
+    });
+
+    // Function to load entries from the server and display them
+    async function loadEntries() {
+      try {
+        const response = await fetch('/entries');
+        const entries = await response.json();
+        const entriesList = document.getElementById('entriesList');
+        entriesList.innerHTML = ''; // Clear the list before adding new items
+
+        entries.forEach(entry => {
+          const listItem = document.createElement('li');
+          listItem.textContent = `ID: ${entry.job_id}, Name: ${entry.name}, Type: ${entry.type}, Xpos: ${entry.xpos}, Ypos: ${entry.ypos}`;
+          entriesList.appendChild(listItem);
+        });
+      } catch (error) {
+        console.error("Error loading entries:", error);
+      }
+    }
+
+    // Load entries when the page loads
+    loadEntries();
+  </script>
+</body>
+</html>
+
