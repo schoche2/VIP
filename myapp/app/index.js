@@ -4,6 +4,8 @@ const mysql = require('mysql2');
 
 const app = express();
 app.use(express.json());
+// needed to use .css file
+app.use(express.static(path.join(__dirname, 'public')));
 
 // comment in for usage in DOCKER !!!
 
@@ -39,11 +41,13 @@ app.get('/', (req, res) => {
 
 // Route to add an entry
 app.post('/entry', (req, res) => {
-  const { name } = req.body;
-  console.log("In /entry - Name: " + name);
-  const query = "INSERT INTO jobs (name) VALUES (?)";
-
-  pool.query(query, [name], (err, result) => {
+  const name = req.body.name;
+  const type = req.body.type;
+  const xpos = req.body.xpos;
+  const ypos = req.body.ypos;
+  console.log(req.body);
+  const sql = "INSERT INTO jobs VALUES(null, ?, ?, ?, ?) ";
+  pool.query(sql, [ name, type, xpos, ypos], (err, ) => {
     if (err) {
       console.error("Error adding entry:", err); // Log the detailed error
       return res.status(500).send("Error adding entry to the database.");
