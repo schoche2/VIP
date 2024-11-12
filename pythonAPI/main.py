@@ -1,4 +1,5 @@
 import mysql.connector
+import json
 
 
 def fetch_all_entries(ip, port, user, password, database, table_name):
@@ -72,6 +73,17 @@ def delete_row_by_id(ip, port, user, password, database, table_name, row_id):
         conn.close()
 
 
+def convert_to_json(data_tuple):
+    # Convert the tuple into a dictionary with the required keys
+    data = {
+        "job_id": data_tuple[0],
+        "name": data_tuple[1],
+        "type": data_tuple[2],
+        "xpos": data_tuple[3],
+        "ypos": data_tuple[4]
+    }
+    return data
+
 if __name__ == '__main__':
     print('Hello VIP')
 
@@ -88,10 +100,11 @@ if __name__ == '__main__':
         print(entry)
     '''
 
-    '''
-    lowest_id_row = fetch_lowest_id_row(ip, port, user, password, database, table_name)
-    print(lowest_id_row)
 
+    lowest_id_row = fetch_lowest_id_row(ip, port, user, password, database, table_name)
+    new_job_json = convert_to_json(lowest_id_row)
+    print(new_job_json)
+    '''
     delete_row_by_id(ip, port, user, password, database, table_name, lowest_id_row[0])
 
     lowest_id_row = fetch_lowest_id_row(ip, port, user, password, database, table_name)
