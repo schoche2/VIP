@@ -13,14 +13,14 @@ body {
     margin: 0 auto;
 }
 
-.episode {
+.job {
     display: grid;
     grid-template-columns: 1fr 3fr;
     position: relative;
     margin-bottom: 20px;
 }
 
-.episode__number {
+.job__number {
     font-size: 10vw;
     font-weight: 600;
     padding: 10px 0;
@@ -30,7 +30,7 @@ body {
     height: calc(10vw + 20px);
 }
 
-.episode__content {
+.job__content {
     border-top: 2px solid #fff;
     display: grid;
     grid-template-columns: 1fr 4fr auto;
@@ -39,28 +39,30 @@ body {
     align-items: center;
 }
 
-.title { font-weight: 600; }
-.story { line-height: 26px; }
-.remove { justify-self: end; }
-
-.delete-button, .add-episode-button, .submit-button {
+.delete-button {
     padding: 8px 16px;
     font-size: 14px;
     cursor: pointer;
     border-radius: 4px;
     transition: background 0.3s ease;
     color: #fff;
+    background-color: #ff4444;
     border: none;
 }
-
-.delete-button { background-color: #ff4444; }
 .delete-button:hover { background-color: #cc0000; }
 
-.add-episode-button { background-color: #4caf50; }
-.add-episode-button:hover { background-color: #388e3c; }
-
-.submit-button { background-color: #007bff; }
-.submit-button:hover { background-color: #0056b3; }
+.submit-button {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    color: #ffffff;
+    background-color: #4bc970;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.submit-button:hover { background-color: #388e3c; }
 
 form { margin-bottom: 20px; }
 label, input { display: block; margin-bottom: 10px; }
@@ -73,5 +75,64 @@ input[type="text"], input[type="number"] {
 }
 
 @media (max-width: 600px) {
-    .episode__content { grid-template-columns: 1fr; }
+    .job__content { grid-template-columns: 1fr; }
+}
+
+form {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+fieldset {
+    border: none;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #666666;
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    background: #e8eeef;
+    border: none;
+    border-radius: 4px;
+    color: #384047;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
+}
+
+.mainStruct {
+    display: flex;
+    height: 100vh;              /* Full height of the viewport */
+}
+
+.leftSide {
+    width: 50vw;                /* Fixed width for the left section */
+    position: sticky;
+    top: 0;                     /* Sticks to the top when scrolling */
+    height: 100vh;              /* Full viewport height */
+    padding: 20px;
+    overflow-y: auto;           /* Allows scrolling within the left section if needed */
+}
+
+.rightSide {
+    width: 50vw;                /* Fixed width for the right section */
+    padding: 20px;
+    height: 100vh;              /* Full viewport height */
+    overflow-y: auto;           /* Enables independent scrolling in the right section */
 }

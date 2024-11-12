@@ -7,33 +7,41 @@
   <title>Enter Data</title>
 </head>
 <body>
-<!-- Form for entering new episode data -->
-<form id="episodeForm">
-  <label for="name">Name:</label>
-  <input type="text" id="name" name="name" maxlength="50" required>
+<!-- Form for entering new job data -->
 
-  <label for="type">Type:</label>
-  <input type="text" id="type" name="type" maxlength="50">
+<div class="mainStruct">
+  <div class="leftSide">
+    <form id="inputForm">
+      <h1>New Task</h1>
+      <fieldset>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" maxlength="50" required>
 
-  <label for="xpos">X Position:</label>
-  <input type="number" id="xpos" name="xpos" step="0.01">
+        <label for="type">Type:</label>
+        <input type="text" id="type" name="type" maxlength="50">
 
-  <label for="ypos">Y Position:</label>
-  <input type="number" id="ypos" name="ypos" step="0.01">
+        <label for="xpos">X Position:</label>
+        <input type="number" id="xpos" name="xpos" step="0.01">
 
-  <button type="submit" class="submit-button">Add Episode</button>
-</form>
+        <label for="ypos">Y Position:</label>
+        <input type="number" id="ypos" name="ypos" step="0.01">
+      </fieldset>
 
-
-<div class="container" id="episodeListContainer">
-  <!-- Episodes will be loaded here -->
+      <button type="submit" class="submit-button">Add job</button>
+    </form>
+  </div>
+  <div class="rightSide">
+    <div class="container" id="jobListContainer">
+      <!-- jobs will be loaded here -->
+    </div>
+  </div>
 </div>
 
 
 
 <script>
 
-  document.getElementById('episodeForm').addEventListener('submit', async (event) => {
+  document.getElementById('inputForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const newEntry = {
@@ -52,7 +60,7 @@
         body: JSON.stringify(newEntry)
       });
 
-      loadEntries(); // Refresh the episode list after adding a new entry
+      loadEntries(); // Refresh the job list after adding a new entry
     } catch (error) {
       console.error("Error adding entry:", error);
     }
@@ -66,22 +74,20 @@
       const response = await fetch('/entries');
       const entries = await response.json();
       const container = document.querySelector('.container');
-      container.innerHTML = '<h1 class="center">Service Menu</h1>' +
-              '<button onclick="addDummyEntry()" class="add-episode-button">Add Episode</button>';
 
       entries.forEach(entry => {
-        // Create the episode structure
-        const episode = document.createElement('article');
-        episode.classList.add('episode');
+        // Create the job structure
+        const job = document.createElement('article');
+        job.classList.add('job');
 
-        // Episode number
-        const episodeNumber = document.createElement('div');
-        episodeNumber.classList.add('episode__number');
-        episodeNumber.textContent = entry.job_id;
+        // job number
+        const jobNumber = document.createElement('div');
+        jobNumber.classList.add('job__number');
+        jobNumber.textContent = entry.job_id;
 
-        // Episode content
-        const episodeContent = document.createElement('div');
-        episodeContent.classList.add('episode__content');
+        // job content
+        const jobContent = document.createElement('div');
+        jobContent.classList.add('job__content');
 
         // Title
         const title = document.createElement('div');
@@ -103,20 +109,20 @@
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete-button');
         deleteButton.textContent = "Delete";
-        deleteButton.onclick = () => episode.remove();
+        deleteButton.onclick = () => job.remove();
         remove.appendChild(deleteButton);
 
-        // Append elements to episode content
-        episodeContent.appendChild(title);
-        episodeContent.appendChild(story);
-        episodeContent.appendChild(remove);
+        // Append elements to job content
+        jobContent.appendChild(title);
+        jobContent.appendChild(story);
+        jobContent.appendChild(remove);
 
-        // Append number and content to episode
-        episode.appendChild(episodeNumber);
-        episode.appendChild(episodeContent);
+        // Append number and content to job
+        job.appendChild(jobNumber);
+        job.appendChild(jobContent);
 
-        // Append new episode to the container
-        container.appendChild(episode);
+        // Append new job to the container
+        container.appendChild(job);
       });
     } catch (error) {
       console.error("Error loading entries:", error);
