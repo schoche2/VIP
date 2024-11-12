@@ -40,7 +40,7 @@
 
 
 <script>
-
+  // SENT NEW ENTRY TO DB
   document.getElementById('inputForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -60,24 +60,34 @@
         body: JSON.stringify(newEntry)
       });
 
-      loadEntries(); // Refresh the job list after adding a new entry
+      // Refresh the job list after adding a new entry
+      try {
+        await loadEntries();
+      } catch (error) {
+        console.error("Error reloading all entries", error)
+      }
     } catch (error) {
       console.error("Error adding entry:", error);
     }
-
-    event.target.reset(); // Reset form fields
+    // Reset form fields
+    event.target.reset();
   });
 
 
+  // GET ENTRIES FROM DB AND LOAD INTO LIST
   async function loadEntries() {
+
+    // Clear any old entries in the container
+    const container = document.querySelector('.container');
+    container.innerHTML = '';
+
     try {
       const response = await fetch('/entries');
       const entries = await response.json();
-      const container = document.querySelector('.container');
 
       entries.forEach(entry => {
         // Create the job structure
-        const job = document.createElement('article');
+        const job = document.createElement('job');
         job.classList.add('job');
 
         // job number
