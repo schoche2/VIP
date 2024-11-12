@@ -40,6 +40,12 @@
 
 
 <script>
+
+  // Load entries when the page loads and refreshes
+  loadEntries();
+
+
+
   // SENT NEW ENTRY TO DB
   document.getElementById('inputForm').addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -72,7 +78,7 @@
     // Reset form fields
     event.target.reset();
   });
-
+//---------------------------------------------------------------------------------
 
   // GET ENTRIES FROM DB AND LOAD INTO LIST
   async function loadEntries() {
@@ -119,7 +125,7 @@
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete-button');
         deleteButton.textContent = "Delete";
-        deleteButton.onclick = () => job.remove();
+        deleteButton.onclick = () => deleteEntry(entry.job_id);
         remove.appendChild(deleteButton);
 
         // Append elements to job content
@@ -138,9 +144,27 @@
       console.error("Error loading entries:", error);
     }
   }
+  //---------------------------------------------------------------------------------------
+  async function deleteEntry(jobId) {
+    try {
+      const response = await fetch(`/entry/${jobId}`, {
+        method: 'DELETE'
+      });
 
-  // Load entries when the page loads
-  loadEntries();
+      if (response.ok) {
+        alert("Entry deleted successfully!");
+        // Optionally, remove the entry from the page or reload entries
+        loadEntries(); // Call your loadEntries function to refresh the list
+      } else if (response.status === 404) {
+        alert("Entry not found.");
+      } else {
+        alert("Error deleting entry.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while trying to delete the entry.");
+    }
+  }
 </script>
 
 </body>

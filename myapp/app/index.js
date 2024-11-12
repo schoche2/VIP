@@ -67,6 +67,24 @@ app.get('/entries', (req, res) => {
   });
 });
 
+app.delete('/entry/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = "DELETE FROM jobs WHERE job_id = ?";
+
+  pool.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error("Error deleting entry:", err); // Log the detailed error
+      return res.status(500).send("Error deleting entry from the database.");
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send("Entry not found.");
+    }
+
+    res.status(200).send("Entry deleted successfully!");
+  });
+});
+
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
