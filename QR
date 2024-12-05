@@ -1,0 +1,54 @@
+import cv2
+from pyzbar.pyzbar import decode
+
+def scan_qr_code_and_save_to_file(output_file):
+
+    cap = cv2.VideoCapture(0)
+
+    print("Point the camera at a QR code. Press 'q' to quit.")
+
+    while True:
+        # basically reads a frame
+        ret, frame = cap.read()
+        if not ret:
+            print("Failed to grab frame.")
+            break
+
+        
+        decoded_objects = decode(frame)
+
+        # Draw rectangles around detected QR codes and display the decoded data
+        for obj in decoded_objects:
+    
+            points = obj.polygon
+            if len(points) > 4:  
+                hull = cv2.convexHull(np.array([point for point in points], dtype=np.float32))
+                points = hull
+            points = [(int(point.x), int(point.y)) for point in points]
+
+            # Draw the bounding box
+            for j in range(len(points)):
+                cv2.line(frame, points[j], points[(j + 1) % len(points)], (0, 255, 0), 3)
+
+            # Decode and save the QR code data
+            qr_data = obj.data.decode("utf-8")
+            print(f"QR Code Data: {qr_data}")
+
+            
+            with open(output_file, "w") as file:
+                file.write(qr_data)
+                print(f"Data saved to {output_file}")
+
+        # Displays the frame 
+        cv2.imshow("QR Code Scanner", frame)
+
+        # if you press q ,loop will break
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+scan_qr_code_and_save_to_file("scanned_qr_data.txt")  
