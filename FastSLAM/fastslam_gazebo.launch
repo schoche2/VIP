@@ -1,0 +1,20 @@
+<launch>
+  <!-- Launch the TurtleBot3 robot nodes -->
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_robot.launch"/>
+
+  <!-- Launch the FastSLAM node -->
+  <node name="fastslam_node" pkg="turtlebot3slam" type="slam_main.py" output="screen"/>
+
+  <!-- Launch the exploration node -->
+  <node name="explore" pkg="frontier_exploration" type="explore" output="screen"/>
+
+  <!-- Launch RViz with the FastSLAM config -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find turtlebot3slam)/rviz/fastslam_config.rviz"/>
+  
+    
+  <!-- Static Transform Publisher (Temporary Fix) -->
+    <node pkg="tf" type="static_transform_publisher" name="map_to_base_link" args="0 0 0 0 0 0 map base_link 10"/>
+
+</launch>
+
+
